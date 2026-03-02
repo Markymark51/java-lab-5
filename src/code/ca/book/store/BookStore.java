@@ -3,6 +3,10 @@ package ca.book.store;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
 
 public class BookStore
 {
@@ -322,6 +326,86 @@ public class BookStore
     }
 
     /**
+     * Creates a map of novels using the title as the key, removes titles containing "the",
+     * and prints the remaining novels in sorted order.
+     */
+    public void processNovelsUsingMap()
+    {
+        final Map<String, Novel> novelMap;
+        final Set<String> keySet;
+        final Iterator<String> keyIterator;
+        final List<String> keyList;
+
+        novelMap = new HashMap<>();
+
+        for (final Novel currentNovel : novelList)
+        {
+            novelMap.put(currentNovel.getTitle(), currentNovel);
+        }
+
+        keySet = novelMap.keySet();
+        keyIterator = keySet.iterator();
+
+        while (keyIterator.hasNext())
+        {
+            final String title;
+
+            title = keyIterator.next();
+            System.out.println(title);
+        }
+
+        removeTitlesContaining(novelMap);
+
+        keyList = new ArrayList<>(novelMap.keySet());
+
+        Collections.sort(keyList);
+
+        printSortedNovels(keyList, novelMap);
+    }
+
+    /**
+     * Removes all novels whose titles contain "the", ignoring case.
+     *
+     * @param novelMap map of novels
+     */
+    private void removeTitlesContaining(final Map<String, Novel> novelMap)
+    {
+        final Iterator<String> keyIterator;
+
+        keyIterator = novelMap.keySet().iterator();
+
+        while (keyIterator.hasNext())
+        {
+            final String title;
+
+            title = keyIterator.next();
+
+            if (title.toLowerCase().contains("the"))
+            {
+                keyIterator.remove();
+            }
+        }
+    }
+
+    /**
+     * Prints novels using sorted keys.
+     *
+     * @param sortedKeys sorted list of titles
+     * @param novelMap map of novels
+     */
+    private void printSortedNovels(final List<String> sortedKeys,
+                                   final Map<String, Novel> novelMap)
+    {
+        for (final String title : sortedKeys)
+        {
+            final Novel novel;
+
+            novel = novelMap.get(title);
+            System.out.println(novel);
+        }
+    }
+
+    /**
      * Tests program.
      *
      * @param args unused.
@@ -366,6 +450,9 @@ public class BookStore
         System.out.println("\nBooks with titles 15 characters long:");
         fifteenCharTitles = bookstore.getBooksThisLength(15);
         fifteenCharTitles.forEach(novel -> System.out.println(novel.getTitle()));
+
+        System.out.println("\n--- PART 2 OUTPUT ---");
+        bookstore.processNovelsUsingMap();
     }
 
 

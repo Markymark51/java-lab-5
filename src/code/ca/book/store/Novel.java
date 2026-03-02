@@ -64,4 +64,15 @@ public class Novel implements Comparable<Novel>
     {
         return this.title.compareToIgnoreCase(other.title);
     }
+
+    /**
+     * Returns a formatted string representation of the novel.
+     *
+     * @return formatted novel information
+     */
+    @Override
+    public String toString()
+    {
+        return "Title: " + title + ", Author: " + authorName + ", Year: " + publishYear;
+    }
 }
